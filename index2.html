@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Todo App</title>
+		<script src="https://cdn.jsdelivr.net/npm/vue@3.2.8/dist/vue.global.prod.min.js"></script>
+	</head>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+			background-color: #f0f0f0;
+		}
+
+		#app {
+			max-width: 600px;
+			margin: 0 auto;
+			padding: 20px;
+			background-color: white;
+			border-radius: 5px;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		}
+
+		.todo-container {
+			margin-top: 20px;
+		}
+
+		.todo-list {
+			list-style: none;
+			padding: 0;
+		}
+
+		li {
+			display: flex;
+			align-items: center;
+			margin: 10px 0;
+		}
+
+		.completed {
+			text-decoration: line-through;
+			opacity: 0.5;
+		}
+
+		button {
+			margin-left: 10px;
+			padding: 5px 10px;
+			background-color: #ff4d4d;
+			color: white;
+			border: none;
+			border-radius: 3px;
+			cursor: pointer;
+		}
+	</style>
+	<body>
+		<div id="app">
+			<h1>Todo App</h1>
+			<div class="todo-container">
+				<input v-model="newTodo" @keyup.enter="addTodo" placeholder="Add a new todo">
+				<ul class="todo-list">
+					<li v-for="(todo, index) in todos" :key="index">
+						<input type="checkbox" v-model="todo.completed">
+						<span :class="{ 'completed': todo.completed }">{{ todo.text }}</span>
+						<button @click="deleteTodo(index)">Delete</button>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+	</body>
+	<script>
+		const app = Vue.createApp({
+			data() {
+				return {
+					newTodo: '',
+					todos: []
+				};
+			},
+			methods: {
+				addTodo() {
+					if (this.newTodo.trim() !== '') {
+						this.todos.push({
+							text: this.newTodo,
+							completed: false
+						});
+						this.newTodo = '';
+					}
+				},
+				deleteTodo(index) {
+					this.todos.splice(index, 1);
+				}
+			}
+		});
+
+		app.mount('#app');
+	</script>
+</html>
